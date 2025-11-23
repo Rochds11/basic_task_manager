@@ -1,4 +1,5 @@
 from actions.record_tasks import RecordTasks, Priotity
+from actions.list_tasks import ListTasks
 from colorama import Fore, Style
 
 class CommandManager:
@@ -37,6 +38,8 @@ class CommandManager:
         
     def view_tasks(self):
         print(Fore.GREEN + "Ejecutando: Ver todas las tareas" + Style.RESET_ALL)
+        list_tasks = ListTasks()
+        list_tasks.execute()
 
     def delete_task(self):
         print(Fore.GREEN + "Ejecutando: Eliminar una tarea existente" + Style.RESET_ALL)
