@@ -7,7 +7,7 @@ class CommandManager:
         self.command: int = None
         self.commands = {
             1: "Agregar una nueva tarea",
-            2: "Ver todas las tareas",
+            2: "Listar tareas",
             3: "Eliminar una tarea existente",
             4: "Actualizar el estado de una tarea"
         }
@@ -37,9 +37,18 @@ class CommandManager:
         register.record_task()
         
     def view_tasks(self):
-        print(Fore.GREEN + "Ejecutando: Ver todas las tareas" + Style.RESET_ALL)
+        print(Fore.GREEN + "Ejecutando: Listar tareas" + Style.RESET_ALL)
+        input_action = self.read_search_options()
         list_tasks = ListTasks()
-        list_tasks.execute()
+        list_actions = {
+            1: list_tasks.search_all_task,
+            2: list_tasks.search_task_by_title,
+            3: list_tasks.list_tasks_by_priority
+        }
+        list_action = list_actions.get(int(input_action), self.invalid_command)
+        list_action() if input_action == 1 else \
+        list_action(input("Ingrese el valor de búsqueda: ") if input_action == 2 else\
+        int(input("Ingrese la prioridad (número entero): ")))
 
     def delete_task(self):
         print(Fore.GREEN + "Ejecutando: Eliminar una tarea existente" + Style.RESET_ALL)
@@ -65,3 +74,14 @@ class CommandManager:
 
     def load_priorities(self):
         return Priotity.Priotities
+    
+    def read_search_options(self):
+        while True:
+            option = input(Fore.CYAN + f"Seleccione una opción de búsqueda:\n" \
+            f"1. Ver todas las tareas\n" \
+            f"2. Buscar por título\n" \
+            f"3. Listar por prioridad\n" + Style.RESET_ALL).strip()
+            if option and option.isdigit() and int(option) in [1, 2, 3]:
+                return int(option)
+            else:
+                print(Fore.RED + "Entrada inválida. Por favor, intente de nuevo." + Style.RESET_ALL)
