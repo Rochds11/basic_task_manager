@@ -1,4 +1,5 @@
 import os, json
+from colorama import Fore, Style
 
 class ListTasks:
     def __init__(self):
@@ -28,6 +29,12 @@ class ListTasks:
         result = self.search_engine(2, priority)
         for task in result:
             print(f"Task ID: {task['_id']}, Titulo: {task['title']}, Status: {task['status']}, Priority: {task['priority']}")
+
+    def search_all_tasks_by_priority(self):
+        tasks = self.get_all_tasks()
+        sorted_tasks = sorted(tasks, key=lambda x: x["priority"], reverse=True)
+        for task in sorted_tasks:
+            print(Fore.MAGENTA + f"Priority: {task['priority']}," + Style.RESET_ALL + "Task ID: {task['_id']}, Titulo: {task['title']}, Status: {task['status']}")
 
     def search_engine(self, search_type: int, value):
         tasks = self.get_all_tasks()
